@@ -26,7 +26,7 @@ APPLE_COLOR = (255, 0, 0)
 SNAKE_COLOR = (0, 255, 0)
 
 # Скорость движения змейки:
-SPEED = 20
+SPEED = 10
 
 # Настройка игрового окна:
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), 0, 32)
@@ -39,11 +39,13 @@ clock = pygame.time.Clock()
 
 
 class GameObject:
+    """А-ля абстрактный класс"""
     def __init__(self, position=(0, 0), body_color=(0, 0, 0)):
         self.position = position
         self.body_color = body_color
 
     def draw(self):
+        """А-ля абстрактный метод"""
         raise NotImplementedError("Метод draw должен быть переопределен в дочернем классе")
 
 
@@ -63,7 +65,11 @@ class Apple(GameObject):
 
 
 class Snake(GameObject):
-    def __init__(self, positions=[(GRID_SIZE * 5, GRID_SIZE * 5)], body_color=SNAKE_COLOR):
+    def __init__(
+            self, 
+            positions=[(GRID_SIZE * 5, GRID_SIZE * 5)], 
+            body_color=SNAKE_COLOR
+    ):
         super().__init__(positions[0], body_color)
         self.positions = positions
         self.direction = RIGHT
