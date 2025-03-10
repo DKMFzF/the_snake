@@ -49,7 +49,7 @@ class GameObject:
     def draw(self):
         """Абстрактный метод для отрисовки объекта."""
         raise NotImplementedError(
-            "Метод draw должен быть переопределен в дочернем классе"
+            'Метод draw должен быть переопределен в дочернем классе'
         )
 
 
@@ -83,11 +83,7 @@ class Apple(GameObject):
 class Snake(GameObject):
     """Класс для представления змейки в игре."""
 
-    def __init__(
-            self,
-            positions=None,
-            body_color=SNAKE_COLOR
-    ):
+    def __init__(self, positions=None, body_color=SNAKE_COLOR):
         """Инициализация змейки."""
         if positions is None:
             positions = [(GRID_SIZE * 5, GRID_SIZE * 5)]
@@ -125,10 +121,8 @@ class Snake(GameObject):
             (head[0] + self.direction[0] * GRID_SIZE) % SCREEN_WIDTH,
             (head[1] + self.direction[1] * GRID_SIZE) % SCREEN_HEIGHT
         )
-
         if new_head in self.positions:
             self.reset()
-
         self.positions.insert(0, new_head)
         self.last = self.positions.pop()
 
@@ -166,17 +160,14 @@ def main():
     pygame.init()
     apple = Apple(None, APPLE_COLOR)
     snake = Snake()
-
     while True:
         clock.tick(SPEED)
         handle_keys(snake)
         snake.update_direction()
         snake.move()
-
         if snake.get_head_position() == apple.position:
             apple.randomize_position()
             snake.positions.append(snake.positions[-1])
-
         screen.fill(BOARD_BACKGROUND_COLOR)
         apple.draw()
         snake.draw()
