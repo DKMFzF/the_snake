@@ -125,6 +125,10 @@ class Snake(GameObject):
             (head[0] + self.direction[0] * GRID_SIZE) % SCREEN_WIDTH,
             (head[1] + self.direction[1] * GRID_SIZE) % SCREEN_HEIGHT
         )
+
+        if new_head in self.positions:
+            self.reset()
+        
         self.positions.insert(0, new_head)
         self.last = self.positions.pop()
 
@@ -182,7 +186,7 @@ def main():
         # Проверка, съела ли змейка яблоко
         if snake.get_head_position() == apple.position:
             apple.randomize_position()
-            # Увеличиваем длину змейки
+            # Увеличиваем длину змейки, не удаляя последний сегмент
             snake.positions.append(snake.last)
 
         # Очистка экрана
