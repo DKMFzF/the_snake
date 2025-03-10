@@ -128,7 +128,7 @@ class Snake(GameObject):
 
         if new_head in self.positions:
             self.reset()
-        
+
         self.positions.insert(0, new_head)
         self.last = self.positions.pop()
 
@@ -164,41 +164,22 @@ def handle_keys(snake):
 def main():
     """Основная функция игры."""
     pygame.init()
-
-    # Создаем экземпляр яблока со случайной позицией
     apple = Apple(None, APPLE_COLOR)
-
-    # Создаем экземпляр змейки
     snake = Snake()
 
     while True:
         clock.tick(SPEED)
-
-        # Обработка нажатий клавиш
         handle_keys(snake)
-
-        # Обновление направления змейки
         snake.update_direction()
-
-        # Движение змейки
         snake.move()
 
-        # Проверка, съела ли змейка яблоко
         if snake.get_head_position() == apple.position:
             apple.randomize_position()
-            # Увеличиваем длину змейки, не удаляя последний сегмент
-            snake.positions.append(snake.last)
+            snake.positions.append(snake.positions[-1])
 
-        # Очистка экрана
         screen.fill(BOARD_BACKGROUND_COLOR)
-
-        # Отрисовка яблока
         apple.draw()
-
-        # Отрисовка змейки
         snake.draw()
-
-        # Обновление экрана
         pygame.display.update()
 
 
