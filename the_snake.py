@@ -51,6 +51,7 @@ class GameObject:
 
 class Apple(GameObject):
     def __init__(self, position=(0, 0), body_color=APPLE_COLOR):
+        position = self.get_random_position()
         super().__init__(position, body_color)
 
     def draw(self):
@@ -61,7 +62,15 @@ class Apple(GameObject):
 
     def randomize_position(self):
         """Метод для обновления позиции яблока"""
-        self.position = get_random_position()
+        self.position = self.get_random_position()
+    
+    @staticmethod
+    def get_random_position():
+        """Метод для рандомного позиционирования"""
+        return (
+            randint(0, GRID_WIDTH - 1) * GRID_SIZE,
+            randint(0, GRID_HEIGHT - 1) * GRID_SIZE
+        )
 
 
 class Snake(GameObject):
@@ -119,14 +128,6 @@ class Snake(GameObject):
             self.next_direction = None
 
 
-def get_random_position():
-    """Метод для рандомного позиционирования"""
-    return (
-        randint(0, GRID_WIDTH - 1) * GRID_SIZE,
-        randint(0, GRID_HEIGHT - 1) * GRID_SIZE
-    )
-
-
 def handle_keys(snake):
     """Функция для обработки нажатий клавиш"""
     for event in pygame.event.get():
@@ -148,7 +149,7 @@ def main():
     pygame.init()
 
     # Создаем экземпляр яблока со случайной позицией
-    apple = Apple(get_random_position(), APPLE_COLOR)
+    apple = Apple(None, APPLE_COLOR)
 
     # Создаем экземпляр змейки
     snake = Snake()
