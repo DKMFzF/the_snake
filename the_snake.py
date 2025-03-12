@@ -16,7 +16,7 @@ BORDER_COLOR = (93, 216, 228)
 APPLE_COLOR = (255, 0, 0)
 SNAKE_COLOR = (0, 255, 0)
 SPEED = 10
-SPEED_BOOST = 20  # Новая скорость при ускорении
+SPEED_BOOST = 20
 
 direction_mapping = {
     (pygame.K_UP, DOWN): DOWN,
@@ -43,7 +43,7 @@ clock = pygame.time.Clock()
 
 
 class GameObject:
-    """Базовый класс для всех игровых объектов."""
+    """Базовый класс для всех игровых объектов"""
 
     def __init__(self, position=(0, 0), body_color=(0, 0, 0)):
         """Инициализация игрового объекта."""
@@ -51,34 +51,34 @@ class GameObject:
         self.body_color = body_color
 
     def draw(self):
-        """Абстрактный метод для отрисовки объекта."""
+        """Абстрактный метод для отрисовки объекта"""
         raise NotImplementedError(
             'Метод draw должен быть переопределен в дочернем классе'
         )
 
     def draw_cell(self, position, color):
-        """Метод для отрисовки одной ячейки."""
+        """Метод для отрисовки одной ячейки"""
         rect = pygame.Rect(position, (GRID_SIZE, GRID_SIZE))
         pygame.draw.rect(screen, color, rect)
         pygame.draw.rect(screen, BORDER_COLOR, rect, 1)
 
 
 class Apple(GameObject):
-    """Класс для представления яблока в игре."""
+    """Класс для представления яблока в игре"""
 
     def __init__(self, position=(0, 0), body_color=APPLE_COLOR):
-        """Инициализация яблока со случайной позицией."""
+        """Инициализация яблока со случайной позицией"""
         position = self.randomize_position()
         super().__init__(position, body_color)
 
     def draw(self):
-        """Метод для отрисовки яблока на экране."""
+        """Метод для отрисовки яблока на экране"""
         rect = pygame.Rect(self.position, (GRID_SIZE, GRID_SIZE))
         pygame.draw.rect(screen, self.body_color, rect)
         pygame.draw.rect(screen, BORDER_COLOR, rect, 1)
 
     def randomize_position(self, snake_positions=None):
-        """Метод для обновления позиции яблока."""
+        """Метод для обновления позиции яблока"""
         if snake_positions is None:
             snake_positions = []
 
@@ -92,10 +92,10 @@ class Apple(GameObject):
 
 
 class Snake(GameObject):
-    """Класс для представления змейки в игре."""
+    """Класс для представления змейки в игре"""
 
     def __init__(self, body_color=SNAKE_COLOR):
-        """Инициализация змейки."""
+        """Инициализация змейки"""
         super().__init__(body_color=body_color)
         self.reset()
 
@@ -105,12 +105,12 @@ class Snake(GameObject):
             self.draw_cell(segment, self.body_color)
 
     def get_head_position(self):
-        """Метод для получения позиции головы змейки."""
+        """Метод для получения позиции головы змейки"""
         return self.positions[0]
 
     def move(self):
-        """Метод для движения змейки."""
-        x, y = self.get_head_position()  # Распаковываем координаты головы
+        """Метод для движения змейки"""
+        x, y = self.get_head_position()
         new_head = (
             (x + self.direction[0] * GRID_SIZE) % SCREEN_WIDTH,
             (y + self.direction[1] * GRID_SIZE) % SCREEN_HEIGHT
@@ -121,20 +121,20 @@ class Snake(GameObject):
             else None
 
     def reset(self):
-        """Метод для сброса змейки в начальное состояние."""
+        """Метод для сброса змейки в начальное состояние"""
         self.positions = [(GRID_SIZE * 5, GRID_SIZE * 5)]
         self.direction = RIGHT
         self.last = None
         self.length = 1
 
     def update_direction(self, new_direction):
-        """Метод для обновления направления змейки."""
+        """Метод для обновления направления змейки"""
         if new_direction:
             self.direction = new_direction
 
 
 def handle_keys(snake):
-    """Функция для обработки нажатий клавиш."""
+    """Функция для обработки нажатий клавиш"""
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -149,7 +149,7 @@ def handle_keys(snake):
 
 
 def handle_speed_boost():
-    """Функция для обработки ускорения змейки."""
+    """Функция для обработки ускорения змейки. Нажми Space"""
     keys = pygame.key.get_pressed()
     if keys[pygame.K_SPACE]:
         return SPEED_BOOST
@@ -157,7 +157,7 @@ def handle_speed_boost():
 
 
 def main():
-    """Основная функция игры."""
+    """Основная функция игры"""
     pygame.init()
     snake = Snake()
     apple = Apple(APPLE_COLOR)
