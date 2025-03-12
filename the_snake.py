@@ -17,6 +17,25 @@ APPLE_COLOR = (255, 0, 0)
 SNAKE_COLOR = (0, 255, 0)
 SPEED = 10
 
+direction_mapping = {
+    (pygame.K_UP, DOWN): DOWN,
+    (pygame.K_UP, UP): UP,
+    (pygame.K_UP, LEFT): UP,
+    (pygame.K_UP, RIGHT): UP,
+    (pygame.K_DOWN, UP): UP,
+    (pygame.K_DOWN, DOWN): DOWN,
+    (pygame.K_DOWN, LEFT): DOWN,
+    (pygame.K_DOWN, RIGHT): DOWN,
+    (pygame.K_LEFT, RIGHT): RIGHT,
+    (pygame.K_LEFT, LEFT): LEFT,
+    (pygame.K_LEFT, UP): LEFT,
+    (pygame.K_LEFT, DOWN): LEFT,
+    (pygame.K_RIGHT, LEFT): LEFT,
+    (pygame.K_RIGHT, RIGHT): RIGHT,
+    (pygame.K_RIGHT, UP): RIGHT,
+    (pygame.K_RIGHT, DOWN): RIGHT,
+}
+
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), 0, 32)
 pygame.display.set_caption('Змейка')
 clock = pygame.time.Clock()
@@ -104,14 +123,12 @@ class Snake(GameObject):
         """Метод для сброса змейки в начальное состояние."""
         self.positions = [(GRID_SIZE * 5, GRID_SIZE * 5)]
         self.direction = RIGHT
-        self.next_direction = None
         self.last = None
         self.length = 1
 
     def update_direction(self, new_direction):
         """Метод для обновления направления змейки."""
         if new_direction:
-            print(new_direction)
             self.direction = new_direction
 
 
@@ -122,14 +139,9 @@ def handle_keys(snake):
             pygame.quit()
             raise SystemExit
         elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_UP and snake.direction != DOWN:
-                snake.update_direction(UP)
-            elif event.key == pygame.K_DOWN and snake.direction != UP:
-                snake.update_direction(DOWN)
-            elif event.key == pygame.K_LEFT and snake.direction != RIGHT:
-                snake.update_direction(LEFT)
-            elif event.key == pygame.K_RIGHT and snake.direction != LEFT:
-                snake.update_direction(RIGHT)
+            new_direction = direction_mapping.get((event.key, snake.direction))
+            if new_direction:
+                snake.update_direction(new_direction)
 
 
 def main():
