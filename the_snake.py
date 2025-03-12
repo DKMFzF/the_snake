@@ -16,6 +16,7 @@ BORDER_COLOR = (93, 216, 228)
 APPLE_COLOR = (255, 0, 0)
 SNAKE_COLOR = (0, 255, 0)
 SPEED = 10
+SPEED_BOOST = 20  # Новая скорость при ускорении
 
 direction_mapping = {
     (pygame.K_UP, DOWN): DOWN,
@@ -139,9 +140,20 @@ def handle_keys(snake):
             pygame.quit()
             raise SystemExit
         elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                pygame.quit()
+                raise SystemExit
             new_direction = direction_mapping.get((event.key, snake.direction))
             if new_direction:
                 snake.update_direction(new_direction)
+
+
+def handle_speed_boost():
+    """Функция для обработки ускорения змейки."""
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_SPACE]:
+        return SPEED_BOOST
+    return SPEED
 
 
 def main():
@@ -150,7 +162,8 @@ def main():
     snake = Snake()
     apple = Apple(APPLE_COLOR)
     while True:
-        clock.tick(SPEED)
+        clock.tick(handle_speed_boost())
+
         handle_keys(snake)
         snake.move()
         if snake.get_head_position() == apple.position:
