@@ -20,20 +20,12 @@ SPEED = 10
 SPEED_BOOST = 20
 
 direction_mapping = {
-    (pygame.K_UP, DOWN): DOWN,
-    (pygame.K_UP, UP): UP,
     (pygame.K_UP, LEFT): UP,
     (pygame.K_UP, RIGHT): UP,
-    (pygame.K_DOWN, UP): UP,
-    (pygame.K_DOWN, DOWN): DOWN,
     (pygame.K_DOWN, LEFT): DOWN,
     (pygame.K_DOWN, RIGHT): DOWN,
-    (pygame.K_LEFT, RIGHT): RIGHT,
-    (pygame.K_LEFT, LEFT): LEFT,
     (pygame.K_LEFT, UP): LEFT,
     (pygame.K_LEFT, DOWN): LEFT,
-    (pygame.K_RIGHT, LEFT): LEFT,
-    (pygame.K_RIGHT, RIGHT): RIGHT,
     (pygame.K_RIGHT, UP): RIGHT,
     (pygame.K_RIGHT, DOWN): RIGHT,
 }
@@ -118,8 +110,8 @@ class Snake(GameObject):
         )
         self.positions.insert(0, new_head)
 
-        self.last = self.positions.pop() if len(self.positions) > self.length \
-            else None
+        self.last = (self.positions.pop() if len(self.positions) > self.length
+                     else None)
 
     def reset(self):
         """Метод для сброса змейки в начальное состояние"""
